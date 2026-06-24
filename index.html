@@ -742,6 +742,13 @@ function goTo(screen) {
   if (screen === 'admin' && adminLoggedIn) renderAdmin();
   if (screen === 'sorteo' && sorteoLoggedIn) renderSorteoIdle();
 }
+// Leer parámetro ?view= al cargar
+window.addEventListener("DOMContentLoaded", function() {
+  var params = new URLSearchParams(window.location.search);
+  var view = params.get("view");
+  if (view === "sorteo") goTo("registro");
+  if (view === "evento") goTo("evento");
+});
 function irSorteoAdmin() {
   sorteoLoggedIn = true; goTo('sorteo');
   document.getElementById('sorteo-lock').style.display = 'none';
