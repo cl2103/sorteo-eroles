@@ -679,7 +679,7 @@
         <div class="winner-reveal" id="winner-reveal">
           <div class="winner-card">
             <div class="winner-tag">⭐ GANADOR DEL SORTEO</div>
-            <div class="winner-name" id="winner-name"></div>
+            
             <div class="winner-ticket">Ticket <strong id="winner-ticket-num"></strong></div>
             <div class="prize-banner">
               <div class="prize-banner-label">Premio</div>
@@ -1007,7 +1007,7 @@ function iniciarSorteo() {
 function revealWinner(w) {
   document.getElementById('ball-svg').classList.remove('spinning','slowing');
   document.getElementById('numero-display').style.display='none';
-  document.getElementById('winner-name').textContent=`${w.nombre} ${w.apellido||''}`;
+  
   document.getElementById('winner-ticket-num').textContent='#'+String(w.ticket).padStart(3,'0');
   
   document.getElementById('winner-reveal').style.display='block';
