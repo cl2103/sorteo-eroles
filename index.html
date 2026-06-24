@@ -342,7 +342,7 @@
             <div class="select-wrapper">
               <select id="s-genero">
                 <option value="">Selecciona</option>
-                <option>Hombre</option><option>Mujer</option><option>Prefiero no decir</option>
+                <option>M</option><option>F</option>
               </select>
             </div>
           </div>
@@ -382,9 +382,9 @@
               <option>Instagram</option>
               <option>Me lo recomendó un vecino de Salomé</option>
               <option>Me lo recomendó un cliente frecuente del Pasaje</option>
-              <option>Paso por aquí</option>
+              
               <option>Vivo cerca</option>
-              <option>Otro</option>
+              <option>Vivo aquí</option>
             </select>
           </div>
         </div>
@@ -411,7 +411,7 @@
         <div class="ticket-msg" id="ticket-nombre-msg">¡Ya estás dentro!</div>
         <div class="ticket-sub"><span class="pulse-dot"></span>Quedate cerca de la pantalla. Sorteo a las 12:30.</div>
         <div class="screenshot-box">
-          <div class="screenshot-box-title">📸 ¡Tomale una screenshot!</div>
+          <div class="screenshot-box-title">📸 ¡Tomale una captura de pantalla!</div>
           <p>Si ganás, necesitás mostrar esta pantalla con tu número para reclamar el premio.</p>
         </div>
         <div class="ticket-prize">
@@ -519,7 +519,7 @@
         <div class="evento-ticket-dashed"></div>
         <div class="evento-ticket-footer">
           <div class="evento-screenshot-box">
-            <div class="evento-screenshot-title">📸 ¡Tomale una screenshot!</div>
+            <div class="evento-screenshot-title">📸 ¡Tomale una captura de pantalla!</div>
             <p>Guardá esta pantalla como comprobante de tu registro.</p>
           </div>
           <p class="evento-correo-msg" id="e-confirm-correo-msg">Te enviamos un correo de confirmación.</p>
@@ -670,7 +670,7 @@
           <div class="winner-card">
             <div class="winner-tag">⭐ GANADOR DEL SORTEO</div>
             <div class="winner-name" id="winner-name"></div>
-            <div class="winner-ticket">Ticket <strong id="winner-ticket-num"></strong> · <span id="winner-whatsapp"></span></div>
+            <div class="winner-ticket">Ticket <strong id="winner-ticket-num"></strong></div>
             <div class="prize-banner">
               <div class="prize-banner-label">Premio</div>
               <div class="prize-banner-name">Balón Oficial Adidas Trionda · Mundial 2026</div>
@@ -742,13 +742,6 @@ function goTo(screen) {
   if (screen === 'admin' && adminLoggedIn) renderAdmin();
   if (screen === 'sorteo' && sorteoLoggedIn) renderSorteoIdle();
 }
-// Leer parámetro ?view= al cargar
-window.addEventListener("DOMContentLoaded", function() {
-  var params = new URLSearchParams(window.location.search);
-  var view = params.get("view");
-  if (view === "sorteo") goTo("registro");
-  if (view === "evento") goTo("evento");
-});
 function irSorteoAdmin() {
   sorteoLoggedIn = true; goTo('sorteo');
   document.getElementById('sorteo-lock').style.display = 'none';
@@ -999,7 +992,7 @@ function revealWinner(w) {
   document.getElementById('numero-display').style.display='none';
   document.getElementById('winner-name').textContent=`${w.nombre} ${w.apellido||''}`;
   document.getElementById('winner-ticket-num').textContent='#'+String(w.ticket).padStart(3,'0');
-  document.getElementById('winner-whatsapp').textContent=w.whatsapp;
+  
   document.getElementById('winner-reveal').style.display='block';
   launchConfetti();
 }
