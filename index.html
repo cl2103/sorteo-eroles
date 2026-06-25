@@ -482,6 +482,10 @@
           </select>
         </div>
       </div>
+      <div class="form-group" style="margin-top:12px;">
+        <label>¿Quién te invitó? <span class="req-star">*</span></label>
+        <input type="text" id="e-invitado-por" placeholder="Nombre de persona o negocio">
+      </div>
       <div class="form-error" id="e-error">Completá todos los campos obligatorios.</div>
       <button class="btn-submit" onclick="eRegistrar()">Registrarme →</button>
     </div>
@@ -604,7 +608,7 @@
         </div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>#</th><th>Nombre</th><th>Apellido</th><th>Correo</th><th>Adultos</th><th>Niños</th><th>Relación</th><th>Acción</th></tr></thead>
+            <thead><tr><th>#</th><th>Nombre</th><th>Apellido</th><th>Correo</th><th>Adultos</th><th>Niños</th><th>Relación</th><th>Invitado por</th><th>Acción</th></tr></thead>
             <tbody id="tabla-evento"></tbody>
           </table>
         </div>
@@ -837,11 +841,12 @@ async function eRegistrar() {
   const adultos=document.getElementById('e-adultos').value;
   const ninos=document.getElementById('e-ninos').value||'0';
   const relacion=document.getElementById('e-relacion').value;
-  if(!nombre||!apellido||!email||!adultos||!relacion){document.getElementById('e-error').style.display='block';return;}
+  const invitado_por=document.getElementById('e-invitado-por').value.trim();
+  if(!nombre||!apellido||!email||!adultos||!relacion||!invitado_por){document.getElementById('e-error').style.display='block';return;}
   document.getElementById('e-error').style.display='none';
   showSaving('Registrando...');
   try {
-    await sbInsert('asistentes', { nombre, apellido, email, adultos, ninos, relacion });
+    await sbInsert('asistentes', { nombre, apellido, email, adultos, ninos, relacion, invitado_por });
     // Send email
     try {
       await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, { nombre, apellido, email, adultos, ninos });
@@ -852,6 +857,7 @@ async function eRegistrar() {
     document.getElementById('e-adultos').value='';
     document.getElementById('e-ninos').value='0';
     document.getElementById('e-relacion').value='';
+    document.getElementById('e-invitado-por').value='';
     document.getElementById('e-confirm-nombre').textContent=`${nombre} ${apellido}`;
     document.getElementById('e-confirm-adultos').textContent=adultos;
     document.getElementById('e-confirm-ninos').textContent=ninos;
@@ -928,7 +934,7 @@ async function renderAdminEvento() {
       ?'<tr><td colspan="8" style="text-align:center;color:var(--taupe-dark);padding:20px;">Sin registros aún</td></tr>'
       :p.map(x=>`<tr>
         <td>${x.id}</td><td>${x.nombre}</td><td>${x.apellido||''}</td><td>${x.email}</td>
-        <td>${x.adultos}</td><td>${x.ninos}</td><td>${x.relacion}</td>
+        <td>${x.adultos}</td><td>${x.ninos}</td><td>${x.relacion}</td><td>${x.invitado_por||''}</td>
         <td><button class="btn-danger" onclick="deleteAsistente(${x.id})">Borrar</button></td>
       </tr>`).join('');
     window._asistentes=p;
@@ -958,7 +964,7 @@ function exportCSV(type) {
     rows=p.map(x=>[x.ticket,x.nombre,x.apellido,x.whatsapp,x.email,x.edad,x.genero,x.compania,x.pais,x.enteraste]);
   } else {
     h=['#','Nombre','Apellido','Correo','Adultos','Niños','Relación'];
-    rows=p.map(x=>[x.id,x.nombre,x.apellido,x.email,x.adultos,x.ninos,x.relacion]);
+    rows=p.map(x=>[x.id,x.nombre,x.apellido,x.email,x.adultos,x.ninos,x.relacion,x.invitado_por||'']);
   }
   const csv=[h,...rows].map(r=>r.map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
   const a=document.createElement('a');
